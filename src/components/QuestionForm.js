@@ -16,10 +16,24 @@ function QuestionForm(props) {
       [event.target.name]: event.target.value,
     });
   }
+  console.log(formData)
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    const arrayOfAnswers = [formData.answer1, formData.answer2, formData.answer3, formData.answer4];
+
+    fetch("http://localhost:4000/questions", {
+      method: "POST",
+      headers: 
+      { "Content-Type": "application/json" },
+      body:{
+        "prompt": formData.prompt,
+        "answers": arrayOfAnswers,
+        "correctIndex": parseInt(formData.correctIndex)
+      }
+    })
+      .then((j)=> j.json())
+      .then((data)=>console.log(data));
   }
 
   return (
